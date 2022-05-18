@@ -25,4 +25,13 @@ public class UserService {
         address.setUser(u1);
         userRepository.save(u1);
     }
+
+    public User findUserById(String id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+
+    public Address findAddressById(String id) {
+        return addressRepository.findById(id).orElse(null);
+    }
 }

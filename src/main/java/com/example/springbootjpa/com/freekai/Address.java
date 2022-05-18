@@ -10,7 +10,8 @@ public class Address {
     private String id;
     @Column(name = "addr")
     private String addr;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id")
     private User user;
 
     public String getId() {
