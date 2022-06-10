@@ -13,9 +13,25 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    /**
+     * 在实体类中增加注解 及 对应的方法  ==> 可以理解为事件驱动模型
+     * 1.@DomainEvents
+     * 2.@AfterDomainEventPublication 在 @DomainEvents 注解存在时生效
+     *
+     *
+     *
+     * 执行顺序...
+     * 1.com.example.springbootjpa.com.freekai.UserService#save() --> 在 userRepository.save(u1) 保存前
+     * 2.com.example.springbootjpa.com.freekai.User#domainEvents()
+     * 3.com.example.springbootjpa.com.freekai.User#callbackMethod()
+     * 4.com.example.springbootjpa.com.freekai.UserService#save()
+     * 5.com.example.springbootjpa.com.freekai.UserService#save() --> 在 userRepository.save(u1) 保存后
+     * @return
+     */
     @GetMapping("/tt")
     public String testSave(){
         userService.save();
+        System.out.println("接口返回前...");
         return "12";
     }
 
@@ -29,4 +45,5 @@ public class UserController {
         Address add = userService.findAddressById(id);
         return Optional.ofNullable(add).map(item->item.getAddr()).orElse("null address..00");
     }
+
 }

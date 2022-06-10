@@ -21,9 +21,11 @@ public class UserService {
         User u1 = new User();
         BeanUtils.copyProperties(u,u1,new String[]{"id"});
         u1.setId("2");
-        u1.setAddress(address);
-        address.setUser(u1);
+//        u1.setAddress(address);
+//        address.setUser(u1);
+        System.out.println("1.保存前...");
         userRepository.save(u1);
+        System.out.println("保存后...");
     }
 
     public User findUserById(String id) {

@@ -1,6 +1,13 @@
 package com.example.springbootjpa.com.freekai;
 
+import com.example.springbootjpa.com.freekai.event.UserSaveEvent;
+import org.springframework.data.domain.AfterDomainEventPublication;
+import org.springframework.data.domain.DomainEvents;
+
 import javax.persistence.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.concurrent.TimeUnit;
 
 @Entity
 @Table(name = "user")
@@ -52,5 +59,36 @@ public class User {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+
+    @DomainEvents
+    Collection<UserSaveEvent> domainEvents(){
+        System.out.println("2.在user保存后...输出user信息：" + this.toString());
+        return Arrays.asList(new UserSaveEvent(this.id));
+    }
+
+    @AfterDomainEventPublication
+    void callbackMethod() {
+        // … potentially clean up domain events list
+        System.out.println("发布事件后...");
+        // 执行线程等待，观察接口返回是否有影响 ==> sleep会影响 接口的返回...
+//        try {
+//            // sleep会影响 接口的返回...
+//            TimeUnit.SECONDS.sleep(5);
+//            System.out.println("等待5秒后...");
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", address=" + address +
+                '}';
     }
 }
